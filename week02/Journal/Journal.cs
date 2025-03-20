@@ -2,75 +2,83 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-class Journal
+public class Journal
 {
-    private List<Entry> entries = new List<Entry>();
-    private List<string> prompts = new List<string>
+    private List<Entry> _entries;
+
+    public Journal()
     {
-        "Who was the most interesting person I interacted with today?",
-        "What was the best part of my day?",
-        "How did I see the hand of the Lord in my life today?",
-        "What was the strongest emotion I felt today?",
-        "If I had one thing I could do over today, what would it be?"
-    };
+        _entries = new List<Entry>();
+    }
 
-    public void AddEntry()
+    public void AddEntry(Entry entry)
     {
-        Random rand = new Random();
-        string prompt = prompts[rand.Next(prompts.Count)];
-
-        Console.WriteLine($"\nPrompt: {prompt}");
-        Console.Write("Your response: ");
-        string response = Console.ReadLine();
-
-        Entry newEntry = new Entry(DateTime.Now.ToString("yyyy-MM-dd"), prompt, response);
-        entries.Add(newEntry);
+        _entries.Add(entry);
     }
 
     public void DisplayEntries()
     {
-        if (entries.Count == 0)
+        if (_entries.Count == 0)
         {
-            Console.WriteLine("No journal entries found.");
+            Console.WriteLine("No entries to display.");
             return;
         }
-        
-        foreach (Entry entry in entries)
+
+        Console.WriteLine("\n=== Journal Entries ===");
+        foreach (Entry entry in _entries)
         {
-            Console.WriteLine(entry.ToString());
+            Console.WriteLine(entry);
         }
     }
 
     public void SaveToFile(string filename)
     {
-        using (StreamWriter writer = new StreamWriter(filename))
+        try
         {
-            foreach (Entry entry in entries)
+            using (StreamWriter writer = new StreamWriter(filename))
             {
-                writer.WriteLine(entry.FormatForFile());
+                foreach (Entry entry in _entries)
+                {
+                    writer.WriteLine(entry.ToFileString());
+                }
             }
+            Console.WriteLine($"Journal saved to {filename} successfully!");
         }
-        Console.WriteLine("Journal saved successfully.");
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error saving to file: {ex.Message}");
+        }
     }
 
     public void LoadFromFile(string filename)
     {
-        if (!File.Exists(filename))
+        try
         {
-            Console.WriteLine("File not found.");
-            return;
-        }
-
-        entries.Clear();
-        string[] lines = File.ReadAllLines(filename);
-        foreach (string line in lines)
-        {
-            string[] parts = line.Split('|');
-            if (parts.Length == 3)
+            _entries.Clear();
+            
+            using (StreamReader reader = new StreamReader(filename))
             {
-                entries.Add(new Entry(parts[0], parts[1], parts[2]));
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] parts = line.Split('|');
+                    if (parts.Length == 3)
+                    {
+                        DateTime date = DateTime.Parse(parts[0]);
+                        string prompt = parts[1];
+                        string response = parts[2];
+                        
+                        _entries.Add(new Entry(prompt, response, date));
+                    }
+                }
             }
+            
+            Console.WriteLine($"Journal loaded from {filename} successfully!");
         }
-        Console.WriteLine("Journal loaded successfully.");
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading from file: {ex.Message}");
+        }
     }
 }
+
