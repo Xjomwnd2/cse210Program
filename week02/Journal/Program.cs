@@ -4,7 +4,7 @@ class Program
 {
     static void Main()
     {
-        v journal = new Journal();
+        journal = new Journal();
         bool running = true;
 
         while (running)
