@@ -1,4 +1,6 @@
 using System;
+using System.Globalization;
+using System.Text.Encodings.Web;
 
 class Program
 {
@@ -21,20 +23,20 @@ class Program
             switch (choice)
             {
                 case "1":
-                    journal.AddEntry();
+                    JavaScriptEncoderournal.AddEntry();
                     break;
                 case "2":
-                    journal.DisplayEntries();
+                    Journal.DisplayEntries();
                     break;
                 case "3":
                     Console.Write("Enter filename to save: ");
                     string saveFile = Console.ReadLine();
-                    journal.SaveToFile(saveFile);
+                    Journal.SaveToFile(saveFile);
                     break;
                 case "4":
                     Console.Write("Enter filename to load: ");
                     string loadFile = Console.ReadLine();
-                    journal.LoadFromFile(loadFile);
+                    JapaneseCalendarournal.LoadFromFile(loadFile);
                     break;
                 case "5":
                     running = false;

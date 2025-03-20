@@ -21,20 +21,20 @@ class Program
             switch (choice)
             {
                 case "1":
-                    journal.AddEntry();
+                    Journal.AddEntry();
                     break;
                 case "2":
-                    journal.DisplayEntries();
+                    Journal.DisplayEntries();
                     break;
                 case "3":
                     Console.Write("Enter filename to save: ");
                     string saveFile = Console.ReadLine();
-                    journal.SaveToFile(saveFile);
+                    Journal.SaveToFile(saveFile);
                     break;
                 case "4":
                     Console.Write("Enter filename to load: ");
                     string loadFile = Console.ReadLine();
-                    journal.LoadFromFile(loadFile);
+                    Journal.LoadFromFile(loadFile);
                     break;
                 case "5":
                     running = false;
