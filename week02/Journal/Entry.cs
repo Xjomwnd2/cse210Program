@@ -1,49 +1,24 @@
 using System;
 
-class Entry
+public class Entry
 {
-    public string Date { get; set; }
     public string Prompt { get; set; }
     public string Response { get; set; }
+    public DateTime Date { get; set; }
 
-    public Entry(string date, string prompt, string response)
+    public Entry(string prompt, string response, DateTime date)
     {
-        Date = date;
         Prompt = prompt;
         Response = response;
+        Date = date;
     }
 
     public override string ToString()
     {
-        return $"\nDate: {Date}\nPrompt: {Prompt}\nResponse: {Response}\n";
+        return $"Date: {Date.ToShortDateString()}\nPrompt: {Prompt}\nResponse: {Response}\n";
     }
 
-    public string FormatForFile()
-    {
-        return $"{Date}|{Prompt}|{Response}";
-    }
-}
-using System;
-
-class Entry
-{
-    public string Date { get; set; }
-    public string Prompt { get; set; }
-    public string Response { get; set; }
-
-    public Entry(string date, string prompt, string response)
-    {
-        Date = date;
-        Prompt = prompt;
-        Response = response;
-    }
-
-    public override string ToString()
-    {
-        return $"\nDate: {Date}\nPrompt: {Prompt}\nResponse: {Response}\n";
-    }
-
-    public string FormatForFile()
+    public string ToFileString()
     {
         return $"{Date}|{Prompt}|{Response}";
     }
